@@ -1,2 +1,1 @@
-# quizzy-by-josephjojy
-Quizzy App
+# Quizzy App
