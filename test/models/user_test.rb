@@ -31,6 +31,11 @@ class UserTest < ActiveSupport::TestCase
     assert @user.invalid?
   end
 
+  def test_last_name_should_be_of_valid_length
+    @user.last_name = "a" * 51
+    assert @user.invalid?
+  end
+
   def test_email_should_be_unique
     @user.save!
     test_user = @user.dup
