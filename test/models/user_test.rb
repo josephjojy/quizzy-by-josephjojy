@@ -1,10 +1,13 @@
-require 'test_helper'
+# frozen_string_literal: true
+
+require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
   def setup
-    @user = User.new(first_name: "Sam",
-                     last_name: "Smith",
-                     email: "sam@example.com")
+    @user = User.new(
+      first_name: "Sam",
+      last_name: "Smith",
+      email: "sam@example.com")
   end
 
   def test_user_should_be_valid
@@ -76,5 +79,4 @@ class UserTest < ActiveSupport::TestCase
     test_user.save!
     assert @user.invalid?
   end
-
 end
