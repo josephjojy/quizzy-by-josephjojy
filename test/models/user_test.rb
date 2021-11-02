@@ -79,4 +79,11 @@ class UserTest < ActiveSupport::TestCase
     test_user.save!
     assert @user.invalid?
   end
+
+  def test_user_should_have_a_valid_role
+    assert_equal @user.role, "standard"
+    assert @user.valid?
+    @user.role = "administrator"
+    assert @user.valid?
+  end
 end
