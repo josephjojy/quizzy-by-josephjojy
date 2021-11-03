@@ -49,3 +49,6 @@ gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # Password hashing in secured manner
 gem "bcrypt", "~> 3.1.13"
+
+# React - Rails
+gem "react-rails"
