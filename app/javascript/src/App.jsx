@@ -6,12 +6,12 @@ import { PageLoader } from "@bigbinary/neetoui/v2";
 // import { getFromLocalStorage } from "helpers/storage";
 import { Route, Switch, BrowserRouter as Router } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 import { setAuthHeaders } from "apis/axios";
 import { initializeLogger } from "common/logger";
 import Login from "components/Authentication/Login";
 
+import { registerIntercepts } from "./apis/axios";
 import NavBar from "./components/NavBar";
 
 const App = () => {
@@ -22,6 +22,7 @@ const App = () => {
   useEffect(() => {
     setAuthHeaders(setLoading);
     initializeLogger();
+    registerIntercepts();
   }, []);
 
   if (loading) {

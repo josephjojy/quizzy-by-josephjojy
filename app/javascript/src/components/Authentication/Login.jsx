@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 
-import { Toastr } from "@bigbinary/neetoui/v2";
-
 import authApi from "apis/auth";
 import { setAuthHeaders } from "apis/axios";
 import LoginForm from "components/Authentication/Form/LoginForm";
@@ -26,7 +24,6 @@ const Login = () => {
       setLoading(false);
       window.location.href = "/";
     } catch (error) {
-      Toastr.warning("Email or Password is Invalid");
       logger.error(error);
       setLoading(false);
     }
