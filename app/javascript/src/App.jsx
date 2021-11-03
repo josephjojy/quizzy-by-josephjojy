@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 
+import { Button } from "@bigbinary/neetoui/v2";
 import { Route, Switch, BrowserRouter as Router } from "react-router-dom";
 
 import { setAuthHeaders } from "apis/axios";
@@ -20,7 +21,15 @@ const App = () => {
   return (
     <Router>
       <Switch>
-        <Route exact path="/" render={() => <div>Home</div>} />
+        <Route
+          exact
+          path="/"
+          render={() => (
+            <div className="bg-red-900">
+              <Button />
+            </div>
+          )}
+        />
         <Route exact path="/about" render={() => <div>About</div>} />
       </Switch>
     </Router>
