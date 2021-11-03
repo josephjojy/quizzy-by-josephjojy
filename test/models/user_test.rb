@@ -7,42 +7,51 @@ class UserTest < ActiveSupport::TestCase
     @user = User.new(
       first_name: "Sam",
       last_name: "Smith",
-      email: "sam@example.com")
+      email: "sam@example.com",
+      password: "helloworld",
+      password_confirmation: "helloworld")
   end
 
   def test_user_should_be_valid
     assert @user.valid?
+    @user.errors.full_messages
   end
 
   def test_first_name_should_be_present
     @user.first_name = ""
     assert @user.invalid?
+    assert_includes @user.errors.full_messages, "First name can't be blank"
   end
 
   def test_last_name_should_be_present
     @user.last_name = ""
     assert @user.invalid?
+    assert_includes @user.errors.full_messages, "Last name can't be blank"
   end
 
   def test_email_should_be_present
     @user.email = ""
     assert @user.invalid?
+    assert_includes @user.errors.full_messages, "Email can't be blank"
   end
 
   def test_first_name_should_be_of_valid_length
     @user.first_name = "a" * 51
     assert @user.invalid?
+    assert_includes @user.errors.full_messages, "First name is too long (maximum is 50 characters)"
   end
 
   def test_last_name_should_be_of_valid_length
     @user.last_name = "a" * 51
     assert @user.invalid?
+    assert_includes @user.errors.full_messages, "Last name is too long (maximum is 50 characters)"
   end
 
   def test_email_should_be_unique
     @user.save!
     test_user = @user.dup
     assert test_user.invalid?
+    assert_includes test_user.errors.full_messages, "Email has already been taken"
   end
 
   def test_email_address_should_be_saved_as_lowercase
@@ -70,6 +79,7 @@ class UserTest < ActiveSupport::TestCase
       @user.email = email
       assert @user.invalid?
     end
+    assert_includes @user.errors.full_messages, "Email is invalid"
   end
 
   def test_email_should_be_unique_irresrpective_of_letter_case
@@ -78,6 +88,7 @@ class UserTest < ActiveSupport::TestCase
     test_user.email = uppercase_email
     test_user.save!
     assert @user.invalid?
+    assert_includes @user.errors.full_messages, "Email has already been taken"
   end
 
   def test_user_should_have_a_valid_role
@@ -85,5 +96,23 @@ class UserTest < ActiveSupport::TestCase
     assert @user.valid?
     @user.role = "administrator"
     assert @user.valid?
+  end
+
+  def test_password_cant_be_blank
+    @user.password = nil
+    assert @user.invalid?
+    assert_includes @user.errors.full_messages, "Password can't be blank"
+  end
+
+  def test_password_should_have_minimum_length
+    @user.password = "a" * 4
+    assert @user.invalid?
+    assert_includes @user.errors.full_messages, "Password is too short (minimum is 6 characters)"
+  end
+
+  def test_password_and_password_confirmation_should
+    @user.password_confirmation = "#{@user.password}-random"
+    assert_not @user.save
+    assert_includes @user.errors.full_messages, "Password confirmation doesn't match Password"
   end
 end
