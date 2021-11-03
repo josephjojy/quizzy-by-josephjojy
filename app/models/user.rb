@@ -6,6 +6,7 @@ class User < ApplicationRecord
   enum role: { standard: 0, administrator: 1 }
 
   has_secure_password
+  has_secure_token :authentication_token
 
   validates :email, :first_name, :last_name, presence: true
   validates :first_name, :last_name, length: { maximum: 50 }
