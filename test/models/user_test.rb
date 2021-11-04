@@ -9,7 +9,8 @@ class UserTest < ActiveSupport::TestCase
       last_name: "Smith",
       email: "sam@example.com",
       password: "helloworld",
-      password_confirmation: "helloworld")
+      password_confirmation: "helloworld",
+      role: "standard")
   end
 
   def test_user_should_be_valid
