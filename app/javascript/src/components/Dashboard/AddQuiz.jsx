@@ -2,14 +2,24 @@ import React, { useState } from "react";
 
 import { Typography, Button, Input } from "@bigbinary/neetoui/v2";
 
+import quizzesApi from "../../apis/quizzes";
+import { getFromLocalStorage } from "../../helpers/storage";
+
 const AddQuiz = ({ setAddQuiz }) => {
   const [quizName, setQuizName] = useState("");
 
-  const handleSubmit = event => {
-    event.preventDefault();
+  const userId = getFromLocalStorage("authUserId");
 
-    if (quizName.trim()) {
-      setAddQuiz(false);
+  const handleSubmit = async event => {
+    event.preventDefault();
+    setQuizName(quizName.trim());
+    if (quizName) {
+      try {
+        await quizzesApi.create({ quiz: { name: quizName, user_id: userId } });
+        setAddQuiz(false);
+      } catch (error) {
+        logger.error(error);
+      }
     }
   };
 
