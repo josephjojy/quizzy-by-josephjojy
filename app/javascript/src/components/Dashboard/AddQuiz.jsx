@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 
 import { Typography, Button, Input } from "@bigbinary/neetoui/v2";
+import { toast } from "react-toastify";
 
 import quizzesApi from "../../apis/quizzes";
+import { TOASTR_OPTIONS } from "../../constants";
 import { getFromLocalStorage } from "../../helpers/storage";
 
 const AddQuiz = ({ setAddQuiz }) => {
@@ -20,7 +22,7 @@ const AddQuiz = ({ setAddQuiz }) => {
       } catch (error) {
         logger.error(error);
       }
-    }
+    } else toast.error("Quiz Name can't be blank", TOASTR_OPTIONS);
   };
 
   return (
