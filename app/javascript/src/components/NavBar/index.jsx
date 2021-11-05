@@ -26,14 +26,16 @@ const NavBar = ({ isLoggedIn }) => {
   };
 
   return (
-    <div className="border-b-2 mx-5">
+    <div className="border-b-2 px-4">
       <Header
         title="Quizzy"
         actionBlock={
           isLoggedIn && (
             <>
-              <p>Reports</p>
-              <Typography className="px-4">{userName}</Typography>
+              <Typography style="h4">Reports</Typography>
+              <Typography className="px-4" style="h4">
+                {userName}
+              </Typography>
               <Button label="Logout" onClick={() => handleLogout()} />
             </>
           )

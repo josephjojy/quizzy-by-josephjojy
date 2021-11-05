@@ -35,19 +35,21 @@ const App = () => {
   }
 
   return (
-    <Router>
-      <ToastContainer />
-      <NavBar isLoggedIn={isLoggedIn} />
-      <Switch>
-        <Route exact path="/login" component={Login} />
-        <PrivateRoute
-          path="/"
-          redirectRoute="/login"
-          condition={isLoggedIn}
-          component={Dashboard}
-        />
-      </Switch>
-    </Router>
+    <div className="h-screen w-full flex flex-col">
+      <Router>
+        <ToastContainer />
+        <NavBar isLoggedIn={isLoggedIn} />
+        <Switch>
+          <Route exact path="/login" component={Login} />
+          <PrivateRoute
+            path="/"
+            redirectRoute="/login"
+            condition={isLoggedIn}
+            component={Dashboard}
+          />
+        </Switch>
+      </Router>
+    </div>
   );
 };
 

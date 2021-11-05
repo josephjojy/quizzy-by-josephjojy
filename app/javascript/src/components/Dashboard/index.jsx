@@ -1,10 +1,12 @@
 import React from "react";
 
+import QuizList from "./QuizList";
+
 const Dashboard = () => {
   return (
-    <div className="flex items-center justify-center">
-      <p className=""> DASHBOARD</p>
-    </div>
+    <>
+      <QuizList />
+    </>
   );
 };
 
