@@ -3,7 +3,7 @@ import React from "react";
 import { Plus } from "@bigbinary/neeto-icons";
 import { Typography, Button } from "@bigbinary/neetoui/v2";
 
-const QuizList = () => {
+const QuizList = ({ setAddQuiz }) => {
   return (
     <div className=" h-full">
       <div className="w-full flex justify-end pr-8 pt-8">
@@ -12,6 +12,7 @@ const QuizList = () => {
           size="large"
           icon={() => <Plus />}
           iconPosition="left"
+          onClick={() => setAddQuiz(true)}
         />
       </div>
       <div className="flex items-center justify-center h-64">
