@@ -2,9 +2,11 @@ import React, { useMemo } from "react";
 
 import { Edit, Delete } from "@bigbinary/neeto-icons";
 import { Button } from "@bigbinary/neetoui/v2";
+import Logger from "js-logger";
 import { useTable } from "react-table";
 
-import "./table.css";
+import "../../../stylesheets/table.css";
+import quizzesApi from "../../apis/quizzes";
 
 const QuizListTable = ({ quizList }) => {
   const column = [{ header: "Quiz Name", accessor: "name" }];
@@ -18,15 +20,25 @@ const QuizListTable = ({ quizList }) => {
   });
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     tableInstance;
+
+  const handleDelete = async id => {
+    try {
+      const response = await quizzesApi.destroy(id);
+      Logger.info(response);
+    } catch (error) {
+      Logger.error(error);
+    }
+  };
+
   return (
     <div className="w-9/12 ml-auto mr-auto">
       <h2>List of Quizzes</h2>
       <table {...getTableProps()}>
         <thead>
-          {headerGroups.map((headerGroup, index) => (
-            <tr key={index} {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column, index) => (
-                <th key={index} {...column.getHeaderProps()}>
+          {headerGroups.map((headerGroup, rowIndex) => (
+            <tr key={rowIndex} {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column, colIndex) => (
+                <th key={colIndex} {...column.getHeaderProps()}>
                   {column.render("header")}
                 </th>
               ))}
@@ -34,20 +46,20 @@ const QuizListTable = ({ quizList }) => {
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {rows.map((row, index) => {
+          {rows.map((row, rowIndex) => {
             prepareRow(row);
             return (
-              <tr key={index} {...row.getRowProps()}>
-                {row.cells.map((cell, index) => {
+              <tr key={rowIndex} {...row.getRowProps()}>
+                {row.cells.map((cell, colIndex) => {
                   return (
                     <>
                       <td
-                        key={index}
+                        key={colIndex}
                         className="flex justify-between"
                         {...cell.getCellProps()}
                       >
                         <div>{cell.render("Cell")}</div>
-                        <div className="w-2/12 flex justify-between">
+                        <div className="w-48 flex justify-between">
                           <Button
                             label="Edit"
                             onClick={function noRefCheck() {}}
@@ -58,7 +70,9 @@ const QuizListTable = ({ quizList }) => {
                           />
                           <Button
                             label="Delete"
-                            onClick={function noRefCheck() {}}
+                            onClick={() => {
+                              handleDelete(cell.row.original.id);
+                            }}
                             style="danger"
                             icon={Delete}
                             iconPosition="left"

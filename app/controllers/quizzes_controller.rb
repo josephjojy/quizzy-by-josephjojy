@@ -20,6 +20,16 @@ class QuizzesController < ApplicationController
     end
   end
 
+  def destroy
+    quiz = Quiz.find_by(id: params[:id])
+    authorize quiz
+    if quiz.destroy
+      render status: :ok, json: { notice: "Successfully deleted Quiz" }
+    else
+      render status: :unprocessable_entity, json: { error: errors }
+    end
+  end
+
   private
 
     def quiz_params
