@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     resources :users, only: %i[create index]
     resource :sessions, only: %i[create destroy]
     resources :quizzes, only: %i[create index ]
-    resources :quizzes, only: %i[destroy], param: :id
+    resources :quizzes, only: %i[destroy update], param: :id
 
   end
 

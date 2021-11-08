@@ -30,6 +30,16 @@ class QuizzesController < ApplicationController
     end
   end
 
+  def update
+    quiz = Quiz.find_by(id: params[:id])
+    authorize quiz
+    if quiz.update(name: quiz_params[:name])
+      render status: :ok, json: { notice: "Successfully updated Quiz" }
+    else
+      render status: :unprocessable_entity, json: { error: errors }
+    end
+  end
+
   private
 
     def quiz_params

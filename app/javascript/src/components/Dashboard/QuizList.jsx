@@ -7,7 +7,7 @@ import QuizListTable from "./QuizListTable";
 
 import quizzesApi from "../../apis/quizzes";
 
-const QuizList = ({ setAddQuiz }) => {
+const QuizList = ({ setAddQuiz, setEditQuiz, setQuizTitle }) => {
   const [quizList, setQuizList] = useState([]);
   const fetchQuiz = async () => {
     const response = await quizzesApi.index();
@@ -31,7 +31,12 @@ const QuizList = ({ setAddQuiz }) => {
         />
       </div>
       {quizList ? (
-        <QuizListTable quizList={quizList} />
+        <QuizListTable
+          quizList={quizList}
+          setAddQuiz={setAddQuiz}
+          setEditQuiz={setEditQuiz}
+          setQuizTitle={setQuizTitle}
+        />
       ) : (
         <div className="flex items-center justify-center h-64">
           <Typography> You have not created any quiz. </Typography>

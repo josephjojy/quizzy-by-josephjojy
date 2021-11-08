@@ -8,7 +8,7 @@ import { useTable } from "react-table";
 import "../../../stylesheets/table.css";
 import quizzesApi from "../../apis/quizzes";
 
-const QuizListTable = ({ quizList }) => {
+const QuizListTable = ({ quizList, setAddQuiz, setEditQuiz, setQuizTitle }) => {
   const column = [{ header: "Quiz Name", accessor: "name" }];
 
   const columns = useMemo(() => column, []);
@@ -28,6 +28,12 @@ const QuizListTable = ({ quizList }) => {
     } catch (error) {
       Logger.error(error);
     }
+  };
+
+  const handleEdit = (id, name) => {
+    setEditQuiz(id);
+    setQuizTitle(name);
+    setAddQuiz(true);
   };
 
   return (
@@ -62,7 +68,12 @@ const QuizListTable = ({ quizList }) => {
                         <div className="w-48 flex justify-between">
                           <Button
                             label="Edit"
-                            onClick={function noRefCheck() {}}
+                            onClick={() => {
+                              handleEdit(
+                                cell.row.original.id,
+                                cell.row.original.name
+                              );
+                            }}
                             style="secondary"
                             icon={Edit}
                             iconPosition="left"
