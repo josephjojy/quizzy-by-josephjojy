@@ -44,10 +44,7 @@ const AddQuiz = ({
   return (
     <div className=" h-full">
       <div className="pl-16 pt-16 ml-24">
-        <Typography style="h2">
-          {" "}
-          {editQuiz ? "Edit" : "Add new"} quiz{" "}
-        </Typography>
+        <Typography style="h2">{editQuiz ? "Edit" : "Add new"} quiz</Typography>
         <div className="max-w-lg">
           <form className="mt-8" onSubmit={handleSubmit}>
             <div className="flex">

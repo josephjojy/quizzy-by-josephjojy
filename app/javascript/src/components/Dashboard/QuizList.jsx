@@ -30,12 +30,13 @@ const QuizList = ({ setAddQuiz, setEditQuiz, setQuizTitle }) => {
           onClick={() => setAddQuiz(true)}
         />
       </div>
-      {quizList ? (
+      {quizList.length ? (
         <QuizListTable
           quizList={quizList}
           setAddQuiz={setAddQuiz}
           setEditQuiz={setEditQuiz}
           setQuizTitle={setQuizTitle}
+          fetchQuiz={fetchQuiz}
         />
       ) : (
         <div className="flex items-center justify-center h-64">

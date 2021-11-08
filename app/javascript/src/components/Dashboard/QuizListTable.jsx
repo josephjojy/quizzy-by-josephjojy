@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 
 import { Edit, Delete } from "@bigbinary/neeto-icons";
 import { Button } from "@bigbinary/neetoui/v2";
@@ -7,8 +7,17 @@ import { useTable } from "react-table";
 
 import "../../../stylesheets/table.css";
 import quizzesApi from "../../apis/quizzes";
+import DeleteModal from "../Common/DeleteModal";
 
-const QuizListTable = ({ quizList, setAddQuiz, setEditQuiz, setQuizTitle }) => {
+const QuizListTable = ({
+  quizList,
+  setAddQuiz,
+  setEditQuiz,
+  setQuizTitle,
+  fetchQuiz,
+}) => {
+  const [deleteModal, setDeleteModal] = useState(false);
+
   const column = [{ header: "Quiz Name", accessor: "name" }];
 
   const columns = useMemo(() => column, []);
@@ -25,6 +34,7 @@ const QuizListTable = ({ quizList, setAddQuiz, setEditQuiz, setQuizTitle }) => {
     try {
       const response = await quizzesApi.destroy(id);
       Logger.info(response);
+      fetchQuiz();
     } catch (error) {
       Logger.error(error);
     }
@@ -38,6 +48,11 @@ const QuizListTable = ({ quizList, setAddQuiz, setEditQuiz, setQuizTitle }) => {
 
   return (
     <div className="w-9/12 ml-auto mr-auto">
+      <DeleteModal
+        deleteModal={deleteModal}
+        setDeleteModal={setDeleteModal}
+        handleDelete={handleDelete}
+      />
       <h2>List of Quizzes</h2>
       <table {...getTableProps()}>
         <thead>
@@ -82,7 +97,7 @@ const QuizListTable = ({ quizList, setAddQuiz, setEditQuiz, setQuizTitle }) => {
                           <Button
                             label="Delete"
                             onClick={() => {
-                              handleDelete(cell.row.original.id);
+                              setDeleteModal(cell.row.original.id);
                             }}
                             style="danger"
                             icon={Delete}
