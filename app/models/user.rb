@@ -14,7 +14,7 @@ class User < ApplicationRecord
   validates :first_name, :last_name, length: { maximum: 50 }
   validates :email, uniqueness: true, format: { with: VALID_EMAIL_REGEX }
   validates :password, length: { minimum: 6 }, if: -> { password.present? }
-  validates :password_confirmation, presence: true, on: :create
+  validates :password_confirmation, presence: true, on: :create, length: { minimum: 6 }
 
   before_validation :to_lowercase
 

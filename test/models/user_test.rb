@@ -10,12 +10,11 @@ class UserTest < ActiveSupport::TestCase
       email: "sam@example.com",
       password: "helloworld",
       password_confirmation: "helloworld",
-      role: "standard")
+      role: "administrator")
   end
 
   def test_user_should_be_valid
     assert @user.valid?
-    @user.errors.full_messages
   end
 
   def test_first_name_should_be_present
@@ -93,9 +92,9 @@ class UserTest < ActiveSupport::TestCase
   end
 
   def test_user_should_have_a_valid_role
-    assert_equal @user.role, "standard"
+    assert_equal @user.role, "administrator"
     assert @user.valid?
-    @user.role = "administrator"
+    @user.role = "standard"
     assert @user.valid?
   end
 
@@ -115,5 +114,17 @@ class UserTest < ActiveSupport::TestCase
     @user.password_confirmation = "#{@user.password}-random"
     assert_not @user.save
     assert_includes @user.errors.full_messages, "Password confirmation doesn't match Password"
+  end
+
+  def test_password_confirmation_cant_be_blank
+    @user.password_confirmation = nil
+    assert @user.invalid?
+    assert_includes @user.errors.full_messages, "Password confirmation can't be blank"
+  end
+
+  def test_password_confirmation_should_have_minimum_length
+    @user.password_confirmation = "a" * 4
+    assert @user.invalid?
+    assert_includes @user.errors.full_messages, "Password confirmation is too short (minimum is 6 characters)"
   end
 end

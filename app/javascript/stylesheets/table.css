@@ -3,7 +3,7 @@ table {
   font-size:large;
   border-collapse: collapse;
   width: 100%;
-  margin-top: 20px;
+  margin: 20px;
 }
 
 table td, table th {

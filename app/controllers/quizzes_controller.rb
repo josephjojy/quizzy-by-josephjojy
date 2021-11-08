@@ -10,7 +10,7 @@ class QuizzesController < ApplicationController
   end
 
   def create
-    quiz = Quiz.new(quiz_params)
+    quiz = @current_user.quizzes.new(quiz_params)
     authorize quiz
     if quiz.save
       render status: :ok, json: { notice: "Successfully created Quiz" }
@@ -40,9 +40,15 @@ class QuizzesController < ApplicationController
     end
   end
 
+  def show
+    quiz = Quiz.find_by(id: params[:id])
+    authorize quiz
+    render status: :ok, json: { quiz: quiz }
+  end
+
   private
 
     def quiz_params
-      params.require(:quiz).permit(:name, :user_id)
+      params.require(:quiz).permit(:name)
     end
 end

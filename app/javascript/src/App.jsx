@@ -14,11 +14,15 @@ import { getFromLocalStorage } from "helpers/storage";
 import { registerIntercepts } from "./apis/axios";
 import Dashboard from "./components/Dashboard";
 import NavBar from "./components/NavBar";
+import AddQuiz from "./components/Quiz/AddQuiz";
+import EditQuiz from "./components/Quiz/EditQuiz";
 
 const App = () => {
   const [loading, setLoading] = useState(true);
   const authToken = getFromLocalStorage("authToken");
   const isLoggedIn = !either(isNil, isEmpty)(authToken) && authToken !== "null";
+
+  const [quizTitle, setQuizTitle] = useState("");
 
   useEffect(() => {
     setAuthHeaders(setLoading);
@@ -41,6 +45,12 @@ const App = () => {
         <NavBar isLoggedIn={isLoggedIn} />
         <Switch>
           <Route exact path="/login" component={Login} />
+          <Route exact path="/quiz/create">
+            <AddQuiz quizTitle={quizTitle} setQuizTitle={setQuizTitle} />
+          </Route>
+          <Route exact path="/quiz/edit/:slug">
+            <EditQuiz />
+          </Route>
           <PrivateRoute
             path="/"
             redirectRoute="/login"
