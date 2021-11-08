@@ -10,7 +10,7 @@ class QuizzesController < ApplicationController
   end
 
   def create
-    quiz = Quiz.new(quiz_params.merge(user_id: @current_user.id))
+    quiz = @current_user.quizzes.new(quiz_params)
     authorize quiz
     if quiz.save
       render status: :ok, json: { notice: "Successfully created Quiz" }
