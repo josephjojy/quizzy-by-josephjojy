@@ -15,7 +15,7 @@ const AddQuiz = ({ setAddQuiz }) => {
   const handleSubmit = async event => {
     event.preventDefault();
     setQuizName(quizName.trim());
-    if (quizName) {
+    if (quizName.trim()) {
       try {
         await quizzesApi.create({ quiz: { name: quizName, user_id: userId } });
         setAddQuiz(false);

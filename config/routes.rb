@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   defaults format: :json do
     resources :users, only: %i[create index]
     resource :sessions, only: %i[create destroy]
-    resource :quizzes, only: :create
+    resources :quizzes, only: %i[create index]
   end
 
   root "home#index"

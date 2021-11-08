@@ -54,3 +54,6 @@ gem "bcrypt", "~> 3.1.13"
 
 # React - Rails
 gem "react-rails"
+
+# Pundit
+gem "pundit"

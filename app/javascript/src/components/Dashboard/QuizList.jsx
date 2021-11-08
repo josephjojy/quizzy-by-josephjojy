@@ -1,9 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { Plus } from "@bigbinary/neeto-icons";
 import { Typography, Button } from "@bigbinary/neetoui/v2";
 
+import quizzesApi from "../../apis/quizzes";
+
 const QuizList = ({ setAddQuiz }) => {
+  const [quizList, setQuizList] = useState([]);
+  const fetchQuiz = async () => {
+    const response = await quizzesApi.index();
+    const data = await response.data;
+    setQuizList(data.quiz);
+  };
+
+  useEffect(() => {
+    fetchQuiz();
+  }, []);
+
   return (
     <div className=" h-full">
       <div className="w-full flex justify-end pr-8 pt-8">
@@ -15,9 +28,15 @@ const QuizList = ({ setAddQuiz }) => {
           onClick={() => setAddQuiz(true)}
         />
       </div>
-      <div className="flex items-center justify-center h-64">
-        <Typography> You have not created any quiz. </Typography>
-      </div>
+      {quizList ? (
+        quizList.map(data => {
+          return <div key={data.id}>{JSON.stringify(data)}</div>;
+        })
+      ) : (
+        <div className="flex items-center justify-center h-64">
+          <Typography> You have not created any quiz. </Typography>
+        </div>
+      )}
     </div>
   );
 };

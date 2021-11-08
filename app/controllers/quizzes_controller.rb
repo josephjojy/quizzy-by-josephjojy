@@ -1,12 +1,17 @@
 # frozen_string_literal: true
 
 class QuizzesController < ApplicationController
+  after_action :verify_authorized, except: :index
+  after_action :verify_policy_scoped, only: :index
+  before_action :authenticate_user_using_x_auth_token
+
   def index
-    @quiz = Quiz.all
+    @quizzes = policy_scope(Quiz)
   end
 
   def create
     quiz = Quiz.new(quiz_params)
+    authorize quiz
     if quiz.save
       render status: :ok, json: { notice: "Successfully created Quiz" }
     else
