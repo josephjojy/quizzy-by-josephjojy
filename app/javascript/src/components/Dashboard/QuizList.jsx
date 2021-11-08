@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { Plus } from "@bigbinary/neeto-icons";
 import { Typography, Button } from "@bigbinary/neetoui/v2";
 
+import QuizListTable from "./QuizListTable";
+
 import quizzesApi from "../../apis/quizzes";
 
 const QuizList = ({ setAddQuiz }) => {
@@ -29,9 +31,7 @@ const QuizList = ({ setAddQuiz }) => {
         />
       </div>
       {quizList ? (
-        quizList.map(data => {
-          return <div key={data.id}>{JSON.stringify(data)}</div>;
-        })
+        <QuizListTable quizList={quizList} />
       ) : (
         <div className="flex items-center justify-center h-64">
           <Typography> You have not created any quiz. </Typography>
