@@ -5,7 +5,6 @@ import { toast } from "react-toastify";
 
 import quizzesApi from "../../apis/quizzes";
 import { TOASTR_OPTIONS } from "../../constants";
-import { getFromLocalStorage } from "../../helpers/storage";
 
 const AddQuiz = ({
   setAddQuiz,
@@ -16,8 +15,6 @@ const AddQuiz = ({
 }) => {
   const [quizName, setQuizName] = useState(quizTitle);
 
-  const userId = getFromLocalStorage("authUserId");
-
   const handleSubmit = async event => {
     event.preventDefault();
     setQuizTitle("");
@@ -26,11 +23,11 @@ const AddQuiz = ({
       try {
         if (editQuiz) {
           await quizzesApi.update(editQuiz, {
-            quiz: { name: quizName, user_id: userId },
+            quiz: { name: quizName },
           });
         } else {
           await quizzesApi.create({
-            quiz: { name: quizName, user_id: userId },
+            quiz: { name: quizName },
           });
         }
         setAddQuiz(false);
