@@ -9,13 +9,7 @@ import "../../../stylesheets/table.css";
 import quizzesApi from "../../apis/quizzes";
 import DeleteModal from "../Common/DeleteModal";
 
-const QuizListTable = ({
-  quizList,
-  setAddQuiz,
-  setEditQuiz,
-  setQuizTitle,
-  fetchQuiz,
-}) => {
+const QuizListTable = ({ quizList, fetchQuiz }) => {
   const [deleteModal, setDeleteModal] = useState(false);
 
   const column = [{ header: "Quiz Name", accessor: "name" }];
@@ -32,18 +26,15 @@ const QuizListTable = ({
 
   const handleDelete = async id => {
     try {
-      const response = await quizzesApi.destroy(id);
-      Logger.info(response);
+      await quizzesApi.destroy(id);
       fetchQuiz();
     } catch (error) {
       Logger.error(error);
     }
   };
 
-  const handleEdit = (id, name) => {
-    setEditQuiz(id);
-    setQuizTitle(name);
-    setAddQuiz(true);
+  const handleEdit = id => {
+    window.location.assign(`/quiz/edit/${id}`);
   };
 
   return (
@@ -84,10 +75,7 @@ const QuizListTable = ({
                           <Button
                             label="Edit"
                             onClick={() => {
-                              handleEdit(
-                                cell.row.original.id,
-                                cell.row.original.name
-                              );
+                              handleEdit(cell.row.original.id);
                             }}
                             style="secondary"
                             icon={Edit}

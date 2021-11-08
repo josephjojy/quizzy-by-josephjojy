@@ -40,6 +40,12 @@ class QuizzesController < ApplicationController
     end
   end
 
+  def show
+    quiz = Quiz.find_by(id: params[:id])
+    authorize quiz
+    render status: :ok, json: { quiz: quiz }
+  end
+
   private
 
     def quiz_params

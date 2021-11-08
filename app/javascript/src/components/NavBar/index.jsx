@@ -28,7 +28,7 @@ const NavBar = ({ isLoggedIn }) => {
   return (
     <div className="border-b-2 px-4">
       <Header
-        title="Quizzy"
+        title={<div onClick={() => window.location.assign("/")}>Quizzy</div>}
         actionBlock={
           isLoggedIn && (
             <>
