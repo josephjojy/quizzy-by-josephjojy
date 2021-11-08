@@ -10,7 +10,7 @@ class UserTest < ActiveSupport::TestCase
       email: "sam@example.com",
       password: "helloworld",
       password_confirmation: "helloworld",
-      role: "standard")
+      role: "administrator")
   end
 
   def test_user_should_be_valid
@@ -92,9 +92,9 @@ class UserTest < ActiveSupport::TestCase
   end
 
   def test_user_should_have_a_valid_role
-    assert_equal @user.role, "standard"
+    assert_equal @user.role, "administrator"
     assert @user.valid?
-    @user.role = "administrator"
+    @user.role = "standard"
     assert @user.valid?
   end
 
