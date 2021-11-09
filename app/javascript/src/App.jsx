@@ -16,13 +16,12 @@ import Dashboard from "./components/Dashboard";
 import NavBar from "./components/NavBar";
 import AddQuiz from "./components/Quiz/AddQuiz";
 import EditQuiz from "./components/Quiz/EditQuiz";
+import ShowQuiz from "./components/Quiz/ShowQuiz";
 
 const App = () => {
   const [loading, setLoading] = useState(true);
   const authToken = getFromLocalStorage("authToken");
   const isLoggedIn = !either(isNil, isEmpty)(authToken) && authToken !== "null";
-
-  const [quizTitle, setQuizTitle] = useState("");
 
   useEffect(() => {
     setAuthHeaders(setLoading);
@@ -45,12 +44,9 @@ const App = () => {
         <NavBar isLoggedIn={isLoggedIn} />
         <Switch>
           <Route exact path="/login" component={Login} />
-          <Route exact path="/quiz/create">
-            <AddQuiz quizTitle={quizTitle} setQuizTitle={setQuizTitle} />
-          </Route>
-          <Route exact path="/quiz/edit/:slug">
-            <EditQuiz />
-          </Route>
+          <Route exact path="/quiz/create" component={AddQuiz} />
+          <Route exact path="/quiz/:id/edit" component={EditQuiz} />
+          <Route exact path="/quiz/:id/show" component={ShowQuiz} />
           <PrivateRoute
             path="/"
             redirectRoute="/login"

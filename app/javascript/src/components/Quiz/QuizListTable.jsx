@@ -34,7 +34,11 @@ const QuizListTable = ({ quizList, fetchQuiz }) => {
   };
 
   const handleEdit = id => {
-    window.location.assign(`/quiz/edit/${id}`);
+    window.location.assign(`/quiz/${id}/edit`);
+  };
+
+  const handleShow = id => {
+    window.location.assign(`/quiz/${id}/show`);
   };
 
   return (
@@ -70,7 +74,15 @@ const QuizListTable = ({ quizList, fetchQuiz }) => {
                         className="flex justify-between"
                         {...cell.getCellProps()}
                       >
-                        <div>{cell.render("Cell")}</div>
+                        <div>
+                          <Button
+                            label={cell.render("Cell")}
+                            onClick={() => {
+                              handleShow(cell.row.original.id);
+                            }}
+                            style="text"
+                          />
+                        </div>
                         <div className="w-48 flex justify-between">
                           <Button
                             label="Edit"
