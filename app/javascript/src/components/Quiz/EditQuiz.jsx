@@ -10,11 +10,11 @@ import { TOASTR_OPTIONS } from "../../constants";
 
 const EditQuiz = () => {
   const [quizName, setQuizName] = useState("");
-  const { slug } = useParams();
+  const { id } = useParams();
 
   const fetchQuizDetails = async () => {
     try {
-      const response = await quizzesApi.show(slug);
+      const response = await quizzesApi.show(id);
       const { quiz } = response.data;
       setQuizName(quiz.name);
     } catch (error) {
@@ -31,7 +31,7 @@ const EditQuiz = () => {
     setQuizName(quizName.trim());
     if (quizName.trim()) {
       try {
-        await quizzesApi.update(slug, {
+        await quizzesApi.update(id, {
           quiz: { name: quizName },
         });
         window.location.assign("/");

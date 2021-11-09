@@ -8,7 +8,7 @@ const destroy = id => axios.delete(`/quizzes/${id}`);
 
 const update = (id, payload) => axios.put(`/quizzes/${id}`, payload);
 
-const show = slug => axios.get(`/quizzes/${slug}`);
+const show = id => axios.get(`/quizzes/${id}`);
 
 const quizzesApi = {
   index,

@@ -34,7 +34,7 @@ const QuizListTable = ({ quizList, fetchQuiz }) => {
   };
 
   const handleEdit = id => {
-    window.location.assign(`/quiz/edit/${id}`);
+    window.location.assign(`/quiz/${id}/edit`);
   };
 
   return (

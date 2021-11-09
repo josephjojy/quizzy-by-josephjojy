@@ -22,8 +22,6 @@ const App = () => {
   const authToken = getFromLocalStorage("authToken");
   const isLoggedIn = !either(isNil, isEmpty)(authToken) && authToken !== "null";
 
-  const [quizTitle, setQuizTitle] = useState("");
-
   useEffect(() => {
     setAuthHeaders(setLoading);
     initializeLogger();
@@ -46,9 +44,9 @@ const App = () => {
         <Switch>
           <Route exact path="/login" component={Login} />
           <Route exact path="/quiz/create">
-            <AddQuiz quizTitle={quizTitle} setQuizTitle={setQuizTitle} />
+            <AddQuiz />
           </Route>
-          <Route exact path="/quiz/edit/:slug">
+          <Route exact path="/quiz/:id/edit">
             <EditQuiz />
           </Route>
           <PrivateRoute
