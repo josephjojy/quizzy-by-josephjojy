@@ -16,6 +16,7 @@ import Dashboard from "./components/Dashboard";
 import NavBar from "./components/NavBar";
 import AddQuiz from "./components/Quiz/AddQuiz";
 import EditQuiz from "./components/Quiz/EditQuiz";
+import ShowQuiz from "./components/Quiz/ShowQuiz";
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -43,12 +44,9 @@ const App = () => {
         <NavBar isLoggedIn={isLoggedIn} />
         <Switch>
           <Route exact path="/login" component={Login} />
-          <Route exact path="/quiz/create">
-            <AddQuiz />
-          </Route>
-          <Route exact path="/quiz/:id/edit">
-            <EditQuiz />
-          </Route>
+          <Route exact path="/quiz/create" component={AddQuiz} />
+          <Route exact path="/quiz/:id/edit" component={EditQuiz} />
+          <Route exact path="/quiz/:id/show" component={ShowQuiz} />
           <PrivateRoute
             path="/"
             redirectRoute="/login"
