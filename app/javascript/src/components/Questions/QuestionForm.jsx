@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 
 import { Delete, Plus } from "@bigbinary/neeto-icons";
 import { Input, Button, Typography, Select } from "@bigbinary/neetoui/v2";
+import Logger from "js-logger";
 import { useParams } from "react-router";
 
+import questionsApi from "../../apis/questions";
 import quizzesApi from "../../apis/quizzes";
 
 const QuestionForm = () => {
@@ -44,13 +46,31 @@ const QuestionForm = () => {
     setCorrect("");
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
     let i = optionsObject.findIndex(option => option.label === correct.label);
     const data = optionsObject;
     correct.answer = true;
     data[i] = correct;
     setOptionsObject([...data]);
+
+    const result = optionsObject.map(ele => ({
+      content: ele.value,
+      answer: ele.answer,
+    }));
+
+    try {
+      await questionsApi.create({
+        question: {
+          content: question,
+          quiz_id: id,
+          options_attributes: result,
+        },
+      });
+    } catch (error) {
+      Logger.error(error);
+    }
+    window.location.assign(`/quiz/${id}/show`);
   };
 
   useEffect(() => {

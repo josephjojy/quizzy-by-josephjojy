@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     resource :sessions, only: %i[create destroy]
     resources :quizzes, only: %i[create index ]
     resources :quizzes, only: %i[destroy update show], param: :id
+    resources :questions, only: %i[create], param: :id
 
   end
 
