@@ -28,7 +28,7 @@ const ShowQuiz = () => {
   return (
     <div className=" h-full">
       <div className="w-full flex justify-end pr-8 pt-8">
-        <Link to="#">
+        <Link to={`/question/${id}/create`}>
           <Button
             label="Add new question"
             size="large"

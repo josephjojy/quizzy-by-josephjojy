@@ -12,8 +12,7 @@ const QuizList = () => {
   const [quizList, setQuizList] = useState([]);
   const fetchQuiz = async () => {
     const response = await quizzesApi.index();
-    const data = await response.data;
-    setQuizList(data.quiz);
+    await setQuizList(response.data.quiz);
   };
 
   useEffect(() => {

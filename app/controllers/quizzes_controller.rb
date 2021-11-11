@@ -6,7 +6,7 @@ class QuizzesController < ApplicationController
   before_action :authenticate_user_using_x_auth_token
 
   def index
-    @quizzes = policy_scope(Quiz)
+    @quizzes = policy_scope(Quiz).order("created_at DESC")
   end
 
   def create
@@ -21,7 +21,7 @@ class QuizzesController < ApplicationController
   end
 
   def destroy
-    quiz = Quiz.find_by(id: params[:id])
+    quiz = @current_user.quizzes.find_by(id: params[:id])
     authorize quiz
     if quiz.destroy
       render status: :ok, json: { notice: "Successfully deleted Quiz" }
@@ -31,7 +31,7 @@ class QuizzesController < ApplicationController
   end
 
   def update
-    quiz = Quiz.find_by(id: params[:id])
+    quiz = @current_user.quizzes.find_by(id: params[:id])
     authorize quiz
     if quiz.update(name: quiz_params[:name])
       render status: :ok, json: { notice: "Successfully updated Quiz" }
@@ -41,7 +41,7 @@ class QuizzesController < ApplicationController
   end
 
   def show
-    quiz = Quiz.find_by(id: params[:id])
+    quiz = @current_user.quizzes.find_by(id: params[:id])
     authorize quiz
     render status: :ok, json: { quiz: quiz }
   end

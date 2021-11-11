@@ -11,6 +11,7 @@ import DeleteModal from "../Common/DeleteModal";
 
 const QuizListTable = ({ quizList, fetchQuiz }) => {
   const [deleteModal, setDeleteModal] = useState(false);
+  const [deleteQuiz, setDeleteQuiz] = useState(0);
 
   const column = [{ header: "Quiz Name", accessor: "name" }];
 
@@ -44,6 +45,7 @@ const QuizListTable = ({ quizList, fetchQuiz }) => {
   return (
     <div className="w-9/12 ml-auto mr-auto">
       <DeleteModal
+        deleteQuiz={deleteQuiz}
         deleteModal={deleteModal}
         setDeleteModal={setDeleteModal}
         handleDelete={handleDelete}
@@ -97,7 +99,8 @@ const QuizListTable = ({ quizList, fetchQuiz }) => {
                           <Button
                             label="Delete"
                             onClick={() => {
-                              setDeleteModal(cell.row.original.id);
+                              setDeleteQuiz(cell.row.original.id);
+                              setDeleteModal(true);
                             }}
                             style="danger"
                             icon={Delete}

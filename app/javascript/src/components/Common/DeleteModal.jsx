@@ -2,7 +2,12 @@ import React from "react";
 
 import { Modal, Button, Typography } from "@bigbinary/neetoui/v2";
 
-const DeleteModal = ({ deleteModal, setDeleteModal, handleDelete }) => {
+const DeleteModal = ({
+  deleteQuiz,
+  deleteModal,
+  setDeleteModal,
+  handleDelete,
+}) => {
   return (
     <div>
       <Modal
@@ -17,7 +22,7 @@ const DeleteModal = ({ deleteModal, setDeleteModal, handleDelete }) => {
           <Button
             label="Delete"
             onClick={() => {
-              handleDelete(deleteModal);
+              handleDelete(deleteQuiz);
               setDeleteModal(false);
             }}
             size="large"
