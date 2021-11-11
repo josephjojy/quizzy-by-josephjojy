@@ -10,11 +10,17 @@ const QuestionForm = () => {
   const [quizName, setQuizName] = useState("");
   const [optionsObject, setOptionsObject] = useState([]);
   const [numberOfOptions, setNumberOfOptions] = useState(2);
-  const [questionName, setQuestionName] = useState("");
+  const [question, setQuestion] = useState("");
   const [correct, setCorrect] = useState();
   const { id } = useParams();
 
-  const fetchQuizDetails = async () => {
+  const style = {
+    display: "grid",
+    gridTemplateColumns: "10% 40% 50%",
+    gridAutoFlow: "row",
+  };
+
+  const fetchQuizName = async () => {
     const response = await quizzesApi.show(id);
     const data = await response.data;
     setQuizName(data.quiz.name);
@@ -40,77 +46,86 @@ const QuestionForm = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
+    let i = optionsObject.findIndex(option => option.label === correct.label);
+    const data = optionsObject;
+    correct.answer = true;
+    data[i] = correct;
+    setOptionsObject([...data]);
   };
 
   useEffect(() => {
-    fetchQuizDetails();
+    fetchQuizName();
   }, []);
 
   return (
-    <div className="w-2/4">
+    <div className="">
       <Typography className="ml-5 mt-10" style="h1">
         {quizName}
       </Typography>
-      <div className="w-full flex flex-col items-center">
-        <div className="w-full flex justify-around mt-10 ">
-          <span className="">Question</span>
-          <Input
-            placeholder="Enter the Question"
-            className="w-2/4 ml-12"
-            value={questionName}
-            onChange={e => setQuestionName(e.target.value)}
-          />
-        </div>
+      <form
+        className=" space-y-5 space-x-5 w-10/12"
+        style={style}
+        onSubmit={handleSubmit}
+      >
+        <span className="mt-5 ml-5">Question</span>
+        <Input
+          required
+          placeholder="Enter the Question"
+          className=""
+          value={question}
+          onChange={e => setQuestion(e.target.value)}
+        />
+        <div></div>
         {Array(numberOfOptions)
           .fill()
           .map((_, index) => (
-            <div key={index} className="w-full flex justify-around mt-10 ">
-              <span className="mt-2">{`Option ${index + 1}`}</span>
-              <div className="w-3/4 flex justify-between">
-                <div className="w-11/12">
-                  <Input
-                    value={optionsObject[index]?.value}
-                    onChange={e => handleOption(e, index)}
-                  />
-                </div>
-                <div className="max-h-4 mt-1">
-                  {numberOfOptions > 2 && index > 1 && (
-                    <Button
-                      icon={Delete}
-                      onClick={e => handleDelete(e, index)}
-                    ></Button>
-                  )}
-                </div>
+            <>
+              <span className="">{`Option ${index + 1}`}</span>
+              <div className="flex space-x-3">
+                <Input
+                  required
+                  value={optionsObject[index]?.value}
+                  onChange={e => handleOption(e, index)}
+                />
               </div>
-            </div>
+              {numberOfOptions > 2 && index > 1 ? (
+                <Button
+                  className="justify-self-start"
+                  icon={Delete}
+                  onClick={e => handleDelete(e, index)}
+                ></Button>
+              ) : (
+                <div></div>
+              )}
+            </>
           ))}
-      </div>
-      {numberOfOptions < 4 && (
-        <Button
-          icon={() => <Plus />}
-          iconPosition="left"
-          label="Add Options"
-          className="mt-10 ml-32"
-          onClick={() => setNumberOfOptions(prev => prev + 1)}
-        />
-      )}
-      <div className=" w-11/12 flex items-center mt-16">
-        <div className="ml-5">Correct Answer</div>
-        <div className="w-11/12 ml-6">
-          <form onSubmit={handleSubmit}>
-            <Select
-              value={correct}
-              isClearable
-              isSearchable
-              name="ValueList"
-              options={optionsObject}
-              placeholder="Select an Option"
-              onChange={e => setCorrect(e)}
-            />
-            <Button label="Submit" type="submit" />
-          </form>
+        <div></div>
+        {numberOfOptions < 4 ? (
+          <Button
+            icon={() => <Plus />}
+            iconPosition="left"
+            label="Add Options"
+            className="justify-self-start"
+            onClick={() => setNumberOfOptions(prev => prev + 1)}
+          />
+        ) : (
+          <div></div>
+        )}
+        <div></div>
+        <div className="">Correct Answer</div>
+        <div>
+          <Select
+            value={correct}
+            isClearable
+            isSearchable
+            options={optionsObject}
+            placeholder="Select an Option"
+            onChange={e => setCorrect(e)}
+            required
+          />
+          <Button label="Submit" type="submit" className="mt-4" size="large" />
         </div>
-      </div>
+      </form>
     </div>
   );
 };
