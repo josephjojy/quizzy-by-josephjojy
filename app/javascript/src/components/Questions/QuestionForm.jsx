@@ -2,19 +2,22 @@ import React, { useState, useEffect } from "react";
 
 import { Delete, Plus } from "@bigbinary/neeto-icons";
 import { Input, Button, Typography, Select } from "@bigbinary/neetoui/v2";
-import Logger from "js-logger";
-import { useParams } from "react-router";
 
-import questionsApi from "../../apis/questions";
 import quizzesApi from "../../apis/quizzes";
 
-const QuestionForm = () => {
+const QuestionForm = ({
+  optionsObject,
+  setOptionsObject,
+  numberOfOptions,
+  setNumberOfOptions,
+  question,
+  setQuestion,
+  correct,
+  setCorrect,
+  id,
+  handleSubmit,
+}) => {
   const [quizName, setQuizName] = useState("");
-  const [optionsObject, setOptionsObject] = useState([]);
-  const [numberOfOptions, setNumberOfOptions] = useState(2);
-  const [question, setQuestion] = useState("");
-  const [correct, setCorrect] = useState();
-  const { id } = useParams();
 
   const style = {
     display: "grid",
@@ -31,46 +34,22 @@ const QuestionForm = () => {
   const handleOption = (e, index) => {
     const data = optionsObject;
     data[index] = {
-      label: e.target.value,
-      value: e.target.value,
+      label: e.target.value.trim(),
+      value: e.target.value.trim(),
       answer: false,
+      id: optionsObject[index]?.id,
     };
     setOptionsObject([...data]);
   };
 
   const handleDelete = (e, index) => {
     const data = optionsObject;
+    const deleteEle = { id: data[index].id, _destroy: "1", answer: false };
     data.splice(index, 1);
+    data.push(deleteEle);
     setOptionsObject([...data]);
     setNumberOfOptions(prev => prev - 1);
     setCorrect("");
-  };
-
-  const handleSubmit = async e => {
-    e.preventDefault();
-    let i = optionsObject.findIndex(option => option.label === correct.label);
-    const data = optionsObject;
-    correct.answer = true;
-    data[i] = correct;
-    setOptionsObject([...data]);
-
-    const result = optionsObject.map(ele => ({
-      content: ele.value,
-      answer: ele.answer,
-    }));
-
-    try {
-      await questionsApi.create({
-        question: {
-          content: question,
-          quiz_id: id,
-          options_attributes: result,
-        },
-      });
-    } catch (error) {
-      Logger.error(error);
-    }
-    window.location.assign(`/quiz/${id}/show`);
   };
 
   useEffect(() => {
@@ -138,7 +117,7 @@ const QuestionForm = () => {
             value={correct}
             isClearable
             isSearchable
-            options={optionsObject}
+            options={optionsObject.filter(O => O.value != null)}
             placeholder="Select an Option"
             onChange={e => setCorrect(e)}
             required

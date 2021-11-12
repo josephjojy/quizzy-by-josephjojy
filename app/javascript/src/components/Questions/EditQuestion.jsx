@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Logger from "js-logger";
 import { useParams } from "react-router";
@@ -6,29 +6,56 @@ import { useParams } from "react-router";
 import QuestionForm from "./QuestionForm";
 
 import questionsApi from "../../apis/questions";
+import quizzesApi from "../../apis/quizzes";
 
-const AddQuestion = () => {
+const EditQuestion = () => {
   const [optionsObject, setOptionsObject] = useState([]);
   const [numberOfOptions, setNumberOfOptions] = useState(2);
   const [question, setQuestion] = useState("");
   const [correct, setCorrect] = useState();
-  const { id } = useParams();
+  const { id, quesId } = useParams();
+
+  const fetchQuizDetails = async () => {
+    try {
+      const response = await quizzesApi.show(id);
+      const quiz = await response.data.quiz.questions;
+      const result = quiz.find(Q => Q.id == quesId);
+      const res = result.options.map(ele => ({
+        value: ele.content,
+        label: ele.content,
+        answer: ele.answer,
+        id: ele.id,
+      }));
+      setOptionsObject(res);
+      setNumberOfOptions(result.options.length);
+      setQuestion(result.content);
+      setCorrect(res.find(O => O.answer));
+    } catch (error) {
+      logger.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchQuizDetails();
+  }, []);
 
   const handleSubmit = async e => {
     e.preventDefault();
     let i = optionsObject.findIndex(option => option.label === correct.label);
+    let j = optionsObject.findIndex(option => option.answer);
     const data = optionsObject;
-    correct.answer = true;
-    data[i] = correct;
+    if (j >= 0) data[j].answer = false;
+    data[i].answer = true;
     setOptionsObject([...data]);
-
     const result = optionsObject.map(ele => ({
       content: ele.value,
       answer: ele.answer,
+      id: ele.id,
+      _destroy: ele._destroy,
     }));
 
     try {
-      await questionsApi.create({
+      await questionsApi.update(quesId, {
         question: {
           content: question,
           quiz_id: id,
@@ -57,4 +84,4 @@ const AddQuestion = () => {
   );
 };
 
-export default AddQuestion;
+export default EditQuestion;
