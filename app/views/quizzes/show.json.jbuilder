@@ -5,7 +5,7 @@ json.quiz do
   json.questions @quiz.questions do |question|
     json.extract! question, :content, :id
     json.options question.options do |option|
-      json.extract! option, :content, :answer
+      json.extract! option, :content, :answer, :id
     end
   end
 end

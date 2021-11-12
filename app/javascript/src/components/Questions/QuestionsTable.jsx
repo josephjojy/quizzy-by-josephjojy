@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Edit, Delete } from "@bigbinary/neeto-icons";
 import { Button, Typography } from "@bigbinary/neetoui/v2";
 import Logger from "js-logger";
+import { useParams } from "react-router-dom";
 
 import questionsApi from "../../apis/questions";
 import DeleteModal from "../Common/DeleteModal";
@@ -10,7 +11,7 @@ import DeleteModal from "../Common/DeleteModal";
 const QuestionsTable = ({ ques, fetchQuizDetails }) => {
   const [deleteModal, setDeleteModal] = useState(false);
   const [deleteQuiz, setDeleteQuiz] = useState(0);
-
+  const { id } = useParams();
   const handleDelete = async id => {
     try {
       await questionsApi.destroy(id);
@@ -18,6 +19,10 @@ const QuestionsTable = ({ ques, fetchQuizDetails }) => {
     } catch (error) {
       Logger.error(error);
     }
+  };
+
+  const handleEdit = quesId => {
+    window.location.assign(`/quiz/${id}/question/${quesId}/edit`);
   };
 
   const style = {
@@ -46,7 +51,9 @@ const QuestionsTable = ({ ques, fetchQuizDetails }) => {
               <Button
                 className="ml-20"
                 label="Edit"
-                onClick={() => {}}
+                onClick={() => {
+                  handleEdit(Q.id);
+                }}
                 style="secondary"
                 icon={Edit}
                 iconPosition="left"

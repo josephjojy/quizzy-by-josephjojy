@@ -34,16 +34,19 @@ const QuestionForm = ({
   const handleOption = (e, index) => {
     const data = optionsObject;
     data[index] = {
-      label: e.target.value,
-      value: e.target.value,
+      label: e.target.value.trim(),
+      value: e.target.value.trim(),
       answer: false,
+      id: optionsObject[index]?.id,
     };
     setOptionsObject([...data]);
   };
 
   const handleDelete = (e, index) => {
     const data = optionsObject;
+    const deleteEle = { id: data[index].id, _destroy: "1", answer: false };
     data.splice(index, 1);
+    data.push(deleteEle);
     setOptionsObject([...data]);
     setNumberOfOptions(prev => prev - 1);
     setCorrect("");
@@ -114,7 +117,7 @@ const QuestionForm = ({
             value={correct}
             isClearable
             isSearchable
-            options={optionsObject}
+            options={optionsObject.filter(O => O.value != null)}
             placeholder="Select an Option"
             onChange={e => setCorrect(e)}
             required
