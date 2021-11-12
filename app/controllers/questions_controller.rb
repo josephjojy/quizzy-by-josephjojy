@@ -14,6 +14,15 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def destroy
+    question = Question.find_by(id: params[:id])
+    if question.destroy
+      render status: :ok, json: { notice: "Successfully deleted Question" }
+    else
+      render status: :unprocessable_entity, json: { error: errors }
+    end
+  end
+
   private
 
     def load_quiz

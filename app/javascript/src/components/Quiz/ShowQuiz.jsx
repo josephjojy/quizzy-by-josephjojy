@@ -57,7 +57,7 @@ const ShowQuiz = () => {
         </Typography>
       </div>
       {ques.length ? (
-        <QuestionsTable ques={ques} />
+        <QuestionsTable ques={ques} fetchQuizDetails={fetchQuizDetails} />
       ) : (
         <div className="flex items-center justify-center h-64">
           <Typography> You have not created any questions. </Typography>
