@@ -28,6 +28,10 @@ class QuizPolicy
     quiz.user_id == user.id
   end
 
+  def set_slug?
+    quiz.user_id == user.id
+  end
+
   class Scope
     attr_reader :user, :scope
 

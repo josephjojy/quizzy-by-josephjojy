@@ -7,4 +7,5 @@ class Quiz < ApplicationRecord
 
   validates :name, presence: true, length: { maximum: 50 }
   validates :user_id, presence: true
+  validates :slug, uniqueness: { allow_nil: true }
 end

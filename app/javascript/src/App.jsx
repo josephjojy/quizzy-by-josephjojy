@@ -12,6 +12,7 @@ import PrivateRoute from "components/Common/PrivateRoute";
 import { getFromLocalStorage } from "helpers/storage";
 
 import { registerIntercepts } from "./apis/axios";
+import CheckQuiz from "./components/AttemptQuiz/CheckQuiz";
 import Dashboard from "./components/Dashboard";
 import NavBar from "./components/NavBar";
 import AddQuestion from "./components/Questions/AddQuestion";
@@ -50,6 +51,7 @@ const App = () => {
           <Route exact path="/quiz/:id/edit" component={EditQuiz} />
           <Route exact path="/quiz/:id/show" component={ShowQuiz} />
           <Route exact path="/question/:id/create" component={AddQuestion} />
+          <Route exact path="/public/:slug" component={CheckQuiz} />
           <Route
             exact
             path="/quiz/:id/question/:quesId/edit"
