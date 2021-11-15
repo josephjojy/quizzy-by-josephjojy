@@ -10,12 +10,15 @@ const update = (id, payload) => axios.put(`/quizzes/${id}`, payload);
 
 const show = id => axios.get(`/quizzes/${id}`);
 
+const setSlug = id => axios.get(`/quizzes/setSlug/${id}`);
+
 const quizzesApi = {
   index,
   create,
   destroy,
   update,
   show,
+  setSlug,
 };
 
 export default quizzesApi;

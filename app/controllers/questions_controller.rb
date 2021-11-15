@@ -26,7 +26,7 @@ class QuestionsController < ApplicationController
   def update
     question = Question.find_by(id: params[:id])
     if question.update(update_ques_params)
-      render status: :ok, json: { notice: "Successfully deleted Question" }
+      render status: :ok, json: { notice: "Successfully updated Question" }
     else
       render status: :unprocessable_entity, json: { error: errors }
     end
