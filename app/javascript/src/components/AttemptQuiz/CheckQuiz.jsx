@@ -12,7 +12,7 @@ const CheckQuiz = () => {
   const fetchQuizSlug = async () => {
     try {
       const response = await quizzesApi.showSlug(slug);
-      setQuizName(response.data.quiz);
+      setQuizName(response.data.quiz.name);
     } catch (error) {
       Logger.error(error);
     }
