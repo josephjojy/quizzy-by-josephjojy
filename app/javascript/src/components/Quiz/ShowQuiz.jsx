@@ -69,7 +69,11 @@ const ShowQuiz = () => {
           {slug && (
             <Typography>
               Published, your public link is -{" "}
-              <Link to="#" className="text-blue-400">
+              <Link
+                to={`/public/${slug}`}
+                target="_blank"
+                className="text-blue-400"
+              >
                 {`${window.location.origin}/public/${slug}`}
               </Link>
             </Typography>
