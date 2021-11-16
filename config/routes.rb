@@ -6,6 +6,8 @@ Rails.application.routes.draw do
     resource :sessions, only: %i[create destroy]
     resources :quizzes, only: %i[create index destroy update show ]
     resources :questions, only: %i[create destroy update]
+    resources :attempts, only: %i[create]
+
   end
 
   get "quizzes/setSlug/:id", to: "quizzes#set_slug"

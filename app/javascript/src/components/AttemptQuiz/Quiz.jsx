@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { Typography, Radio, Button } from "@bigbinary/neetoui/v2";
 
-const Quiz = ({ quizName, userId, questions }) => {
+const Quiz = ({ attemptQuiz, userId }) => {
   const [answer, setAnswer] = useState({});
 
   const handleSubmit = async event => {
@@ -25,9 +25,9 @@ const Quiz = ({ quizName, userId, questions }) => {
         }}
       >
         <Typography className="ml-10 mt-5" style="h1">
-          {quizName}
+          {attemptQuiz.name}
         </Typography>
-        {questions.map((Q, index) => {
+        {attemptQuiz.questions.map((Q, index) => {
           return (
             <div
               key={index}

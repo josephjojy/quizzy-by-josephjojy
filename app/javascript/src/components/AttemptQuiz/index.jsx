@@ -10,21 +10,20 @@ import quizzesApi from "../../apis/quizzes";
 
 const AttemptQuiz = () => {
   const { slug } = useParams();
-  const [quizName, setQuizName] = useState("");
   const [userId, setUserId] = useState();
-  const [questions, setQuestions] = useState();
+  const [attemptQuiz, setAttemptQuiz] = useState("");
+  const [attemptId, setAttemptId] = useState();
+  attemptId;
 
   const fetchQuizSlug = async () => {
     try {
       const response = await quizzesApi.showSlug(slug);
       const { quiz } = await response.data;
-      setQuestions(quiz.questions);
-      setQuizName(quiz.name);
+      await setAttemptQuiz(quiz);
     } catch (error) {
       Logger.error(error);
     }
   };
-
   useEffect(() => {
     fetchQuizSlug();
   }, []);
@@ -32,9 +31,13 @@ const AttemptQuiz = () => {
   return (
     <>
       {userId ? (
-        <Quiz quizName={quizName} userId={userId} questions={questions} />
+        <Quiz attemptQuiz={attemptQuiz} userId={userId} />
       ) : (
-        <Login quizName={quizName} setUserId={setUserId} />
+        <Login
+          setAttemptId={setAttemptId}
+          attemptQuiz={attemptQuiz}
+          setUserId={setUserId}
+        />
       )}
     </>
   );
