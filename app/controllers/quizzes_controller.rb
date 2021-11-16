@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class QuizzesController < ApplicationController
-  after_action :verify_authorized, except: :index
+  after_action :verify_authorized, except: [:index, :show_slug]
   after_action :verify_policy_scoped, only: :index
-  before_action :authenticate_user_using_x_auth_token
+  before_action :authenticate_user_using_x_auth_token, except: :show_slug
 
   def index
     @quizzes = policy_scope(Quiz).order("created_at DESC")
@@ -63,6 +63,13 @@ class QuizzesController < ApplicationController
     slug = slug_count.positive? ? "#{name_slug}-#{slug_count + 1}" : name_slug
     unless @quiz.update(slug: slug)
       render status: :not_found, json: { error: errors }
+    end
+  end
+
+  def show_slug
+    @quiz = Quiz.find_by(slug: params[:slug])
+    unless @quiz
+      render status: :not_found, json: { error: "Cannot find Quiz" }
     end
   end
 

@@ -10,6 +10,8 @@ Rails.application.routes.draw do
 
   get "quizzes/setSlug/:id", to: "quizzes#set_slug"
 
+  get "quizzes/showSlug/:slug", to: "quizzes#show_slug"
+
   root "home#index"
   get "*path", to: "home#index", via: :all
 end
