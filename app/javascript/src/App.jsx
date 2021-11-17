@@ -14,6 +14,7 @@ import { getFromLocalStorage } from "helpers/storage";
 import { registerIntercepts } from "./apis/axios";
 import AttemptQuiz from "./components/AttemptQuiz";
 import CheckQuiz from "./components/AttemptQuiz/CheckQuiz";
+import Result from "./components/AttemptQuiz/Result";
 import Dashboard from "./components/Dashboard";
 import NavBar from "./components/NavBar";
 import AddQuestion from "./components/Questions/AddQuestion";
@@ -57,6 +58,11 @@ const App = () => {
             exact
             path="/public/:slug/attempt/new"
             component={AttemptQuiz}
+          />
+          <Route
+            exact
+            path="/public/:slug/attempt/:attemptId/result"
+            component={Result}
           />
           <Route
             exact

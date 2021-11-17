@@ -15,9 +15,28 @@ class AttemptsController < ApplicationController
     end
   end
 
+  def update
+    attempt = Attempt.find_by(id: params[:id])
+    if attempt.update(update_attempt_params)
+      render status: :ok, json: { notice: "Successfully updated Attempt" }
+    else
+      render status: :unprocessable_entity, json: { error: attempt.errors.full_messages.to_sentence }
+    end
+  end
+
+  def show
+    @attempt = Attempt.find_by(id: params[:id])
+  end
+
   private
 
     def attempt_params
       params.require(:attempt).permit(:user_id, :quiz_id, :submitted)
+    end
+
+    def update_attempt_params
+      params.require(:attempt).permit(
+        :user_id, :quiz_id, :submitted,
+        attempt_answers_attributes: [:question_id, :option_id])
     end
 end

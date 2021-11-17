@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class QuizzesController < ApplicationController
-  after_action :verify_authorized, except: [:index, :show_slug]
+  after_action :verify_authorized, except: [:index, :show_slug, :show_answer]
   after_action :verify_policy_scoped, only: :index
-  before_action :authenticate_user_using_x_auth_token, except: :show_slug
+  before_action :authenticate_user_using_x_auth_token, except: [:show_slug, :show_answer]
 
   def index
     @quizzes = policy_scope(Quiz).order("created_at DESC")
@@ -71,6 +71,10 @@ class QuizzesController < ApplicationController
     unless @quiz
       render status: :not_found, json: { error: "Cannot find Quiz" }
     end
+  end
+
+  def show_answer
+    @quiz = Quiz.find_by(slug: params[:slug])
   end
 
   private

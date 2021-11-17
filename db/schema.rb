@@ -12,7 +12,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_16_174824) do
+ActiveRecord::Schema.define(version: 2021_11_16_193305) do
+
+  create_table "attempt_answers", force: :cascade do |t|
+    t.integer "attempt_id", null: false
+    t.integer "question_id", null: false
+    t.integer "option_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["attempt_id", "question_id"], name: "index_attempt_answers_on_attempt_id_and_question_id", unique: true
+    t.index ["attempt_id"], name: "index_attempt_answers_on_attempt_id"
+    t.index ["option_id"], name: "index_attempt_answers_on_option_id"
+    t.index ["question_id"], name: "index_attempt_answers_on_question_id"
+  end
 
   create_table "attempts", force: :cascade do |t|
     t.integer "user_id", null: false
@@ -63,6 +75,9 @@ ActiveRecord::Schema.define(version: 2021_11_16_174824) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "attempt_answers", "attempts"
+  add_foreign_key "attempt_answers", "options"
+  add_foreign_key "attempt_answers", "questions"
   add_foreign_key "attempts", "quizzes"
   add_foreign_key "attempts", "users"
   add_foreign_key "options", "questions"

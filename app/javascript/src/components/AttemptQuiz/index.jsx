@@ -31,7 +31,7 @@ const AttemptQuiz = () => {
   return (
     <>
       {userId ? (
-        <Quiz attemptQuiz={attemptQuiz} userId={userId} />
+        <Quiz attemptId={attemptId} attemptQuiz={attemptQuiz} userId={userId} />
       ) : (
         <Login
           setAttemptId={setAttemptId}

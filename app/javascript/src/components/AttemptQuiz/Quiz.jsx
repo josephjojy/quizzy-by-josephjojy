@@ -1,19 +1,42 @@
 import React, { useState } from "react";
 
 import { Typography, Radio, Button } from "@bigbinary/neetoui/v2";
+import Logger from "js-logger";
+import { useParams } from "react-router-dom";
 
-const Quiz = ({ attemptQuiz, userId }) => {
+import attemptsApi from "../../apis/attempts";
+
+const Quiz = ({ attemptId, attemptQuiz, userId }) => {
   const [answer, setAnswer] = useState({});
+  const { slug } = useParams();
 
   const handleSubmit = async event => {
     event.preventDefault();
-    userId;
+
+    const result = Object.keys(answer).map(key => ({
+      question_id: key,
+      option_id: answer[key],
+    }));
+
+    try {
+      await attemptsApi.update(attemptId, {
+        attempt: {
+          user_id: userId,
+          quiz_id: attemptQuiz.id,
+          submitted: true,
+          attempt_answers_attributes: result,
+        },
+      });
+      window.location.assign(`/public/${slug}/attempt/${attemptId}/result`);
+    } catch (error) {
+      Logger.error(error);
+    }
   };
 
   const handleChange = async event => {
     const result = {
       ...answer,
-      [event.target.name]: event.target.value,
+      [event.target.name]: event.target.id,
     };
     setAnswer(result);
   };
@@ -48,6 +71,7 @@ const Quiz = ({ attemptQuiz, userId }) => {
                         label={<span className="font-black">{O.content}</span>}
                         value={O.content}
                         name={Q.id}
+                        id={O.id}
                       />
                     </Radio>
                   </>
