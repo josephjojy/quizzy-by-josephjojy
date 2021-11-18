@@ -15,6 +15,7 @@ const QuestionForm = ({
   correct,
   setCorrect,
   id,
+  handleDelete,
   handleSubmit,
 }) => {
   const [quizName, setQuizName] = useState("");
@@ -40,16 +41,6 @@ const QuestionForm = ({
       id: optionsObject[index]?.id,
     };
     setOptionsObject([...data]);
-  };
-
-  const handleDelete = (e, index) => {
-    const data = optionsObject;
-    const deleteEle = { id: data[index].id, _destroy: "1", answer: false };
-    data.splice(index, 1);
-    data.push(deleteEle);
-    setOptionsObject([...data]);
-    setNumberOfOptions(prev => prev - 1);
-    setCorrect("");
   };
 
   useEffect(() => {

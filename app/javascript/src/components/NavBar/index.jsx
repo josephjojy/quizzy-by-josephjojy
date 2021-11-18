@@ -28,7 +28,14 @@ const NavBar = ({ isLoggedIn }) => {
   return (
     <div className="border-b-2 px-4">
       <Header
-        title={<div onClick={() => window.location.assign("/")}>Quizzy</div>}
+        title={
+          <div
+            onClick={() => window.location.assign("/")}
+            className="cursor-pointer"
+          >
+            Quizzy
+          </div>
+        }
         actionBlock={
           isLoggedIn && (
             <>

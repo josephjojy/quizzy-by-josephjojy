@@ -6,9 +6,15 @@ Rails.application.routes.draw do
     resource :sessions, only: %i[create destroy]
     resources :quizzes, only: %i[create index destroy update show ]
     resources :questions, only: %i[create destroy update]
+    resources :attempts, only: %i[create update show]
+
   end
 
   get "quizzes/setSlug/:id", to: "quizzes#set_slug"
+
+  get "quizzes/showSlug/:slug", to: "quizzes#show_slug"
+
+  get "quizzes/showAnswer/:slug", to: "quizzes#show_answer"
 
   root "home#index"
   get "*path", to: "home#index", via: :all
