@@ -22,6 +22,7 @@ import EditQuestion from "./components/Questions/EditQuestion";
 import AddQuiz from "./components/Quiz/AddQuiz";
 import EditQuiz from "./components/Quiz/EditQuiz";
 import ShowQuiz from "./components/Quiz/ShowQuiz";
+import Report from "./components/Report";
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -54,6 +55,7 @@ const App = () => {
           <Route exact path="/quiz/:id/show" component={ShowQuiz} />
           <Route exact path="/question/:id/create" component={AddQuestion} />
           <Route exact path="/public/:slug" component={CheckQuiz} />
+          <Route exact path="/reports" component={Report} />
           <Route
             exact
             path="/public/:slug/attempt/new"

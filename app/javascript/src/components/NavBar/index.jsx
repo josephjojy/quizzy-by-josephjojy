@@ -39,7 +39,13 @@ const NavBar = ({ isLoggedIn }) => {
         actionBlock={
           isLoggedIn && (
             <>
-              <Typography style="h4">Reports</Typography>
+              <Typography
+                style="h4"
+                onClick={() => window.location.assign("/reports")}
+                className="cursor-pointer"
+              >
+                Reports
+              </Typography>
               <Typography className="px-4" style="h4">
                 {userName}
               </Typography>

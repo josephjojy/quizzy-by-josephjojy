@@ -77,6 +77,24 @@ class QuizzesController < ApplicationController
     @quiz = Quiz.find_by(slug: params[:slug])
   end
 
+  def generate_report
+    quizzes = @current_user.quizzes.order("created_at DESC")
+    authorize quizzes
+    quizList = quizzes.includes(:attempts, attempts: [:user])
+    @report = []
+    quizList.each do |quiz|
+      quiz.attempts.each do |attempt|
+         if attempt.submitted
+           full_name = attempt.user.first_name + " " + attempt.user.last_name
+           @report << {
+             title: quiz.name, full_name: full_name, email: attempt.user.email,
+             correct_count: attempt.correct_answers_count, incorrect_count: attempt.incorrect_answers_count
+           }
+         end
+       end
+    end
+  end
+
   private
 
     def quiz_params

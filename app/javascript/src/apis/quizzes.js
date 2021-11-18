@@ -16,6 +16,8 @@ const showSlug = slug => axios.get(`/quizzes/showSlug/${slug}`);
 
 const showAnswer = slug => axios.get(`/quizzes/showAnswer/${slug}`);
 
+const generateReport = () => axios.get("/quizzes/generate/report");
+
 const quizzesApi = {
   index,
   create,
@@ -25,6 +27,7 @@ const quizzesApi = {
   setSlug,
   showSlug,
   showAnswer,
+  generateReport,
 };
 
 export default quizzesApi;
