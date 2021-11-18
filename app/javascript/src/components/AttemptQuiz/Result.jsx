@@ -11,12 +11,14 @@ const Result = () => {
   const { slug, attemptId } = useParams();
   const [attemptQuiz, setAttemptQuiz] = useState();
   const [attemptAns, setAttemptAns] = useState();
+  const [attempt, setAttempt] = useState();
 
   const fetchAttempt = async () => {
     try {
       const response = await attemptsApi.show(attemptId);
       const { attempt } = await response.data;
       setAttemptAns(attempt.attempt_answers);
+      setAttempt(attempt);
     } catch (error) {
       Logger.error(error);
     }
@@ -32,23 +34,11 @@ const Result = () => {
     }
   };
 
-  const computeResult = () => {
-    let count = 0;
-    attemptQuiz?.questions.map(Q => {
-      Q.options.map(O => {
-        const ans = attemptAns?.find(attempt => attempt.option_id === O.id)
-          ? true
-          : false;
-        ans && O.answer && count++;
-      });
-    });
-    return count;
-  };
-
   useEffect(() => {
     fetchAnswer();
     fetchAttempt();
   }, []);
+
   return (
     <div className=" max-w-screen-md pl-10 ">
       <Typography className="ml-10 mt-5" style="h1">
@@ -57,8 +47,8 @@ const Result = () => {
       <Typography style="h3" className="ml-10 mt-5">
         Thank you for attempt.
         <br />
-        Your Result is Correct : {computeResult()} and Incorrect :{" "}
-        {attemptQuiz?.questions.length - computeResult()}
+        Your Result is Correct : {attempt?.correct_answers_count} and Incorrect
+        : {attempt?.incorrect_answers_count}
       </Typography>
 
       {attemptQuiz?.questions.map((Q, index) => {
@@ -80,7 +70,13 @@ const Result = () => {
                 ? true
                 : false;
               return (
-                <li key={optionsIndex} className={ans && "bg-gray-300"}>
+                <li
+                  key={optionsIndex}
+                  className={
+                    (ans && "bg-gray-300 mr-20 font-bold py-1") ||
+                    "font-bold py-1"
+                  }
+                >
                   {O.content}
                   {O.answer && (
                     <span className="text-green-400 font-bold">
