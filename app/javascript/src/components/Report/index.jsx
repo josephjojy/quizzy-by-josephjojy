@@ -8,9 +8,28 @@ import { Link } from "react-router-dom";
 import ReportTable from "./ReportTable";
 
 import quizzesApi from "../../apis/quizzes";
+import usersApi from "../../apis/users";
 
 const Report = () => {
   const [report, setReport] = useState();
+
+  const handleDownload = async () => {
+    try {
+      const response = usersApi.exportReport();
+      const job_id = (await response).data.jid;
+      const jobIntervel = setInterval(async () => {
+        const status = await usersApi.exportStatus(job_id);
+        if (status.data.percentage == 100) {
+          clearInterval(jobIntervel);
+          const blob = await usersApi.exportDownload(job_id);
+          const url = URL.createObjectURL(blob.data);
+          window.location.replace(url);
+        } else Logger.info(status.data);
+      }, 1000);
+    } catch (error) {
+      Logger.error(error);
+    }
+  };
 
   const fetchReport = async () => {
     try {
@@ -37,6 +56,7 @@ const Report = () => {
                 size="large"
                 icon={Download}
                 iconPosition="left"
+                onClick={() => handleDownload()}
               />
             </Link>
           </div>

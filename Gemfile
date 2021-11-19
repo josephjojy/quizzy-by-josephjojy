@@ -57,3 +57,10 @@ gem "react-rails"
 
 # Pundit
 gem "pundit"
+
+# Sidekiq
+gem "sidekiq"
+gem "sidekiq-status"
+
+# Excel xls
+gem "axlsx"
