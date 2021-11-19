@@ -5,7 +5,7 @@ class ExportReportWorker
   include Sidekiq::Status::Worker
 
   def perform
-    sleep 5
+    sleep 10
     quizzes = Quiz.order("created_at DESC")
     quizList = quizzes.includes(:attempts, attempts: [:user])
     @report = []
@@ -20,7 +20,6 @@ class ExportReportWorker
          end
        end
     end
-    puts @report
 
     xlsx_package = Axlsx::Package.new
     xlsx_workbook = xlsx_package.workbook

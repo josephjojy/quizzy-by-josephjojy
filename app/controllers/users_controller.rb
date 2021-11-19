@@ -21,22 +21,16 @@ class UsersController < ApplicationController
   end
 
   def export_status
-    respond_to do |format|
-      format.json do
-        job_id = params[:job_id]
-
-        job_status = Sidekiq::Status::pct_complete job_id
-
-        render json: {
-          percentage: job_status
-        }
-      end
-    end
+    job_id = params[:job_id]
+    job_status = Sidekiq::Status::pct_complete job_id
+    render json: {
+      percentage: job_status
+    }
   end
 
   def export_download
     job_id = params[:job_id]
-    exported_file_name = "report_export_#{job_id}.xlsx"
+    exported_file_name = "Report_export_#{job_id}.xlsx"
     send_file Rails.root.join("tmp", exported_file_name), type: :xlsx
   end
 

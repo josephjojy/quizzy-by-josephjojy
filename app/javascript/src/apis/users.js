@@ -6,10 +6,7 @@ const exportReport = () => axios.get("/users/export/report");
 
 const exportStatus = job_id => axios.get(`/users/export/status/${job_id}`);
 
-const exportDownload = job_id =>
-  axios.get(`/users/export/download/${job_id}`, {
-    responseType: "blob",
-  });
+const exportDownload = job_id => axios.get(`/users/export/download/${job_id}`);
 
 const usersApi = {
   create,
