@@ -16,9 +16,19 @@ class AttemptsController < ApplicationController
   end
 
   def update
+    @correct = 0
+    @incorrect = 0
     attempt = Attempt.find_by(id: params[:id])
     if attempt.update(update_attempt_params)
-      render status: :ok, json: { notice: "Successfully updated Attempt" }
+      update_attempt_params[:attempt_answers_attributes].each do |option|
+        currentOption = Option.find_by_id(option[:option_id])
+        if currentOption.answer
+          @correct += 1
+        end
+      end
+      quiz = Quiz.find_by_id(update_attempt_params[:quiz_id])
+      @incorrect = quiz.questions.size - @correct
+      attempt.update(correct_answers_count: @correct, incorrect_answers_count: @incorrect)
     else
       render status: :unprocessable_entity, json: { error: attempt.errors.full_messages.to_sentence }
     end

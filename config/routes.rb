@@ -16,6 +16,8 @@ Rails.application.routes.draw do
 
   get "quizzes/showAnswer/:slug", to: "quizzes#show_answer"
 
+  get "quizzes/generate/report", to: "quizzes#generate_report"
+
   root "home#index"
   get "*path", to: "home#index", via: :all
 end

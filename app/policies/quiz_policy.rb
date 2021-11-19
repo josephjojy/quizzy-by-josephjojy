@@ -32,6 +32,10 @@ class QuizPolicy
     quiz.user_id == user.id
   end
 
+  def generate_report?
+    true
+  end
+
   class Scope
     attr_reader :user, :scope
 
