@@ -41,7 +41,7 @@ const Quiz = ({ attemptId, attemptQuiz, userId }) => {
     setAnswer(result);
   };
   return (
-    <div className=" max-w-screen-md pl-10 ">
+    <div className=" max-w-screen-md pl-10 pb-10">
       <form
         onSubmit={event => {
           handleSubmit(event);
