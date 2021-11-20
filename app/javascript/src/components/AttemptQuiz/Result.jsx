@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Typography } from "@bigbinary/neetoui/v2";
+import { Typography, PageLoader } from "@bigbinary/neetoui/v2";
 import Logger from "js-logger";
 import { useParams } from "react-router-dom";
 
@@ -12,6 +12,7 @@ const Result = () => {
   const [attemptQuiz, setAttemptQuiz] = useState();
   const [attemptAns, setAttemptAns] = useState();
   const [attempt, setAttempt] = useState();
+  const [loading, setLoading] = useState(true);
 
   const fetchAttempt = async () => {
     try {
@@ -19,6 +20,7 @@ const Result = () => {
       const { attempt } = await response.data;
       setAttemptAns(attempt.attempt_answers);
       setAttempt(attempt);
+      setLoading(false);
     } catch (error) {
       Logger.error(error);
     }
@@ -38,6 +40,14 @@ const Result = () => {
     fetchAnswer();
     fetchAttempt();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="absolute top-0 left-0 flex flex-col justify-center items-center w-full h-full">
+        <PageLoader />
+      </div>
+    );
+  }
 
   return (
     <div className=" max-w-screen-md pl-10 ">
