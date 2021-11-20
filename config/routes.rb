@@ -18,6 +18,12 @@ Rails.application.routes.draw do
 
   get "quizzes/generate/report", to: "quizzes#generate_report"
 
+  get "users/export/report", to: "users#export_report"
+
+  get "users/export/status/:job_id", to: "users#export_status"
+
+  get "users/export/download/:job_id", to: "users#export_download"
+
   root "home#index"
   get "*path", to: "home#index", via: :all
 end

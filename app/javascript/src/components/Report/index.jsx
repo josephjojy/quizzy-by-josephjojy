@@ -1,16 +1,42 @@
 import React, { useEffect, useState } from "react";
 
 import { Download } from "@bigbinary/neeto-icons";
-import { Button, Typography } from "@bigbinary/neetoui/v2";
+import { Button, Typography, PageLoader } from "@bigbinary/neetoui/v2";
 import Logger from "js-logger";
 import { Link } from "react-router-dom";
 
 import ReportTable from "./ReportTable";
 
 import quizzesApi from "../../apis/quizzes";
+import usersApi from "../../apis/users";
 
 const Report = () => {
   const [report, setReport] = useState();
+  const [loading, setLoading] = useState(false);
+  const [download, setDownload] = useState(false);
+  const [jobId, setJobId] = useState("");
+
+  const handleDownload = async () => {
+    try {
+      const response = usersApi.exportReport();
+      const job_id = (await response).data.jid;
+      const jobIntervel = setInterval(async () => {
+        const status = await usersApi.exportStatus(job_id);
+        if (status.data.percentage == 100) {
+          clearInterval(jobIntervel);
+          setJobId(job_id);
+          setLoading(false);
+          setDownload(true);
+        }
+      }, 1000);
+    } catch (error) {
+      Logger.error(error);
+    }
+  };
+
+  const downloadReport = () => {
+    window.location.replace(`/users/export/download/${jobId}`);
+  };
 
   const fetchReport = async () => {
     try {
@@ -26,6 +52,29 @@ const Report = () => {
     fetchReport();
   }, []);
 
+  if (loading) {
+    return (
+      <div className="absolute top-0 left-0 flex flex-col justify-center items-center w-full h-full">
+        <PageLoader text="Your report is being prepared for downloading" />
+      </div>
+    );
+  }
+
+  if (download) {
+    return (
+      <div className="absolute top-0 left-0 flex flex-col justify-center items-center w-full h-full space-y-4">
+        <Typography style="h3">Report is now ready for download</Typography>
+        <Button
+          label="Download Report"
+          size="large"
+          icon={Download}
+          iconPosition="left"
+          onClick={() => downloadReport()}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="">
       {report?.length ? (
@@ -37,6 +86,10 @@ const Report = () => {
                 size="large"
                 icon={Download}
                 iconPosition="left"
+                onClick={() => {
+                  setLoading(true);
+                  handleDownload();
+                }}
               />
             </Link>
           </div>
