@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { Plus } from "@bigbinary/neeto-icons";
-import { Typography, Button } from "@bigbinary/neetoui/v2";
+import { Typography, Button, PageLoader } from "@bigbinary/neetoui/v2";
 import { isNil } from "ramda";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -14,6 +14,7 @@ const ShowQuiz = () => {
   const [quizName, setQuizName] = useState("");
   const [ques, setQues] = useState([]);
   const [slug, setSlug] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const createSlug = async () => {
     try {
@@ -31,6 +32,7 @@ const ShowQuiz = () => {
       setQues(quiz.questions);
       setQuizName(quiz.name);
       setSlug(quiz.slug);
+      setLoading(false);
     } catch (error) {
       logger.error(error);
     }
@@ -39,6 +41,14 @@ const ShowQuiz = () => {
   useEffect(() => {
     fetchQuizDetails();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="absolute top-0 left-0 flex flex-col justify-center items-center w-full h-full">
+        <PageLoader />
+      </div>
+    );
+  }
 
   return (
     <div>

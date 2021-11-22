@@ -33,7 +33,7 @@ class ExportReportWorker
       end
     end
 
-    xlsx_package.serialize Rails.root.join("tmp", "report_export_#{self.jid}.xlsx")
+    xlsx_package.serialize Rails.root.join("tmp", "Report_export_#{self.jid}.xlsx")
     at 100
   end
 end
