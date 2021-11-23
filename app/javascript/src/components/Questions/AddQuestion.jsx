@@ -2,10 +2,12 @@ import React, { useState } from "react";
 
 import Logger from "js-logger";
 import { useParams } from "react-router";
+import { toast } from "react-toastify";
 
 import QuestionForm from "./QuestionForm";
 
 import questionsApi from "../../apis/questions";
+import { TOASTR_OPTIONS } from "../../constants";
 
 const AddQuestion = () => {
   const [optionsObject, setOptionsObject] = useState([]);
@@ -24,29 +26,31 @@ const AddQuestion = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    let i = optionsObject.findIndex(option => option.label === correct.label);
-    const data = optionsObject;
-    correct.answer = true;
-    data[i] = correct;
-    setOptionsObject([...data]);
+    if (correct) {
+      let i = optionsObject.findIndex(option => option.label === correct.label);
+      const data = optionsObject;
+      correct.answer = true;
+      data[i] = correct;
+      setOptionsObject([...data]);
 
-    const result = optionsObject.map(ele => ({
-      content: ele.value,
-      answer: ele.answer,
-    }));
+      const result = optionsObject.map(ele => ({
+        content: ele.value,
+        answer: ele.answer,
+      }));
 
-    try {
-      await questionsApi.create({
-        question: {
-          content: question,
-          quiz_id: id,
-          options_attributes: result,
-        },
-      });
-    } catch (error) {
-      Logger.error(error);
-    }
-    window.location.assign(`/quiz/${id}/show`);
+      try {
+        await questionsApi.create({
+          question: {
+            content: question,
+            quiz_id: id,
+            options_attributes: result,
+          },
+        });
+      } catch (error) {
+        Logger.error(error);
+      }
+      window.location.assign(`/quiz/${id}/show`);
+    } else toast.error(" Select the answer from options", TOASTR_OPTIONS);
   };
 
   return (
