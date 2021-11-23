@@ -12,9 +12,10 @@ import usersApi from "../../apis/users";
 
 const Report = () => {
   const [report, setReport] = useState();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [download, setDownload] = useState(false);
   const [jobId, setJobId] = useState("");
+  const [reportLoading, setReportLoading] = useState(false);
 
   const handleDownload = async () => {
     try {
@@ -25,7 +26,7 @@ const Report = () => {
         if (status.data.percentage == 100) {
           clearInterval(jobIntervel);
           setJobId(job_id);
-          setLoading(false);
+          setReportLoading(false);
           setDownload(true);
         }
       }, 1000);
@@ -43,6 +44,7 @@ const Report = () => {
       const response = await quizzesApi.generateReport();
       const { quiz } = await response.data;
       setReport(quiz);
+      setLoading(false);
     } catch (error) {
       Logger.error(error);
     }
@@ -53,6 +55,14 @@ const Report = () => {
   }, []);
 
   if (loading) {
+    return (
+      <div className="absolute top-0 left-0 flex flex-col justify-center items-center w-full h-full">
+        <PageLoader />
+      </div>
+    );
+  }
+
+  if (reportLoading) {
     return (
       <div className="absolute top-0 left-0 flex flex-col justify-center items-center w-full h-full">
         <PageLoader text="Your report is being prepared for downloading" />

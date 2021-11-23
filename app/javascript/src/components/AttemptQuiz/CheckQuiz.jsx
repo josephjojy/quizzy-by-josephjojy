@@ -27,7 +27,7 @@ const CheckQuiz = () => {
       {quizName.length ? (
         window.location.assign(`/public/${slug}/attempt/new`)
       ) : (
-        <div className="absolute top-0 left-0 flex flex-col justify-center items-center w-full h-full">
+        <div className="absolute top-0 left-0 flex flex-col justify-center items-center w-full h-full font-extrabold">
           Quiz Not Found
         </div>
       )}
