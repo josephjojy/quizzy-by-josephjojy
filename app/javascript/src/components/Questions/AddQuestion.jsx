@@ -16,14 +16,6 @@ const AddQuestion = () => {
   const [correct, setCorrect] = useState();
   const { id } = useParams();
 
-  const handleDelete = (e, index) => {
-    const data = optionsObject;
-    data.splice(index, 1);
-    setOptionsObject([...data]);
-    setNumberOfOptions(prev => prev - 1);
-    setCorrect("");
-  };
-
   const handleSubmit = async e => {
     e.preventDefault();
     if (correct) {
@@ -64,7 +56,6 @@ const AddQuestion = () => {
       correct={correct}
       setCorrect={setCorrect}
       id={id}
-      handleDelete={handleDelete}
       handleSubmit={handleSubmit}
     />
   );
