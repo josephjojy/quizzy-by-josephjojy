@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 
 import Logger from "js-logger";
 import { useParams } from "react-router";
+import { toast } from "react-toastify";
 
 import QuestionForm from "./QuestionForm";
 
 import questionsApi from "../../apis/questions";
 import quizzesApi from "../../apis/quizzes";
+import { TOASTR_OPTIONS } from "../../constants";
 
 const EditQuestion = () => {
   const [optionsObject, setOptionsObject] = useState([]);
@@ -51,31 +53,33 @@ const EditQuestion = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    let i = optionsObject.findIndex(option => option.label === correct.label);
-    let j = optionsObject.findIndex(option => option.answer);
-    const data = optionsObject;
-    if (j >= 0) data[j].answer = false;
-    data[i].answer = true;
-    setOptionsObject([...data]);
-    const result = optionsObject.map(ele => ({
-      content: ele.value,
-      answer: ele.answer,
-      id: ele.id,
-      _destroy: ele._destroy,
-    }));
+    if (correct) {
+      let i = optionsObject.findIndex(option => option.label === correct.label);
+      let j = optionsObject.findIndex(option => option.answer);
+      const data = optionsObject;
+      if (j >= 0) data[j].answer = false;
+      data[i].answer = true;
+      setOptionsObject([...data]);
+      const result = optionsObject.map(ele => ({
+        content: ele.value,
+        answer: ele.answer,
+        id: ele.id,
+        _destroy: ele._destroy,
+      }));
 
-    try {
-      await questionsApi.update(quesId, {
-        question: {
-          content: question,
-          quiz_id: id,
-          options_attributes: result,
-        },
-      });
-    } catch (error) {
-      Logger.error(error);
-    }
-    window.location.assign(`/quiz/${id}/show`);
+      try {
+        await questionsApi.update(quesId, {
+          question: {
+            content: question,
+            quiz_id: id,
+            options_attributes: result,
+          },
+        });
+      } catch (error) {
+        Logger.error(error);
+      }
+      window.location.assign(`/quiz/${id}/show`);
+    } else toast.error(" Select the answer from options", TOASTR_OPTIONS);
   };
 
   return (
