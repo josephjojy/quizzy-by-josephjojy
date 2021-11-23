@@ -41,16 +41,6 @@ const EditQuestion = () => {
     fetchQuizDetails();
   }, []);
 
-  const handleDelete = (e, index) => {
-    const data = optionsObject;
-    const deleteEle = { id: data[index].id, _destroy: "1", answer: false };
-    data.splice(index, 1);
-    data.push(deleteEle);
-    setOptionsObject([...data]);
-    setNumberOfOptions(prev => prev - 1);
-    setCorrect("");
-  };
-
   const handleSubmit = async e => {
     e.preventDefault();
     if (correct) {
@@ -93,7 +83,6 @@ const EditQuestion = () => {
       correct={correct}
       setCorrect={setCorrect}
       id={id}
-      handleDelete={handleDelete}
       handleSubmit={handleSubmit}
     />
   );
