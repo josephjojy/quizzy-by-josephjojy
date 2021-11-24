@@ -7,12 +7,12 @@ import quizzesApi from "../../apis/quizzes";
 
 const CheckQuiz = () => {
   const { slug } = useParams();
-  const [quizName, setQuizName] = useState("");
+  const [quizValid, setQuizValid] = useState(false);
 
   const fetchQuizSlug = async () => {
     try {
-      const response = await quizzesApi.showSlug(slug);
-      setQuizName(response.data.quiz.name);
+      await quizzesApi.showSlug(slug);
+      setQuizValid(true);
     } catch (error) {
       Logger.error(error);
     }
@@ -24,7 +24,7 @@ const CheckQuiz = () => {
 
   return (
     <div>
-      {quizName.length ? (
+      {quizValid ? (
         window.location.assign(`/public/${slug}/attempt/new`)
       ) : (
         <div className="absolute top-0 left-0 flex flex-col justify-center items-center w-full h-full font-extrabold">

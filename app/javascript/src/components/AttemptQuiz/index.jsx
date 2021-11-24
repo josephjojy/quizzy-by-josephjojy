@@ -19,9 +19,11 @@ const AttemptQuiz = () => {
 
   const fetchQuizSlug = async () => {
     try {
-      const response = await quizzesApi.showSlug(slug);
-      const { quiz } = await response.data;
-      await setAttemptQuiz(quiz);
+      const response = await quizzesApi.showSlug(slug, userId);
+      if (userId) {
+        const { quiz } = await response.data;
+        setAttemptQuiz(quiz);
+      } else setAttemptQuiz(response.data);
       setLoading(false);
     } catch (error) {
       Logger.error(error);
@@ -43,7 +45,12 @@ const AttemptQuiz = () => {
   return (
     <>
       {userId ? (
-        <Quiz attemptId={attemptId} attemptQuiz={attemptQuiz} userId={userId} />
+        <Quiz
+          attemptId={attemptId}
+          attemptQuiz={attemptQuiz}
+          userId={userId}
+          fetchQuizSlug={fetchQuizSlug}
+        />
       ) : (
         <Login
           setAttemptId={setAttemptId}

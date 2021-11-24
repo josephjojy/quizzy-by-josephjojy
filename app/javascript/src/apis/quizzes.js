@@ -12,7 +12,8 @@ const show = id => axios.get(`/quizzes/${id}`);
 
 const setSlug = id => axios.get(`/quizzes/setSlug/${id}`);
 
-const showSlug = slug => axios.get(`/quizzes/showSlug/${slug}`);
+const showSlug = (slug, userId) =>
+  axios.get(`/quizzes/showSlug/${slug}?userId=${userId}`);
 
 const showAnswer = slug => axios.get(`/quizzes/showAnswer/${slug}`);
 
