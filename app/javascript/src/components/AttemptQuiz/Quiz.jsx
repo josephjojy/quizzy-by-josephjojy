@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Typography, Radio, Button } from "@bigbinary/neetoui/v2";
 import Logger from "js-logger";
@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 
 import attemptsApi from "../../apis/attempts";
 
-const Quiz = ({ attemptId, attemptQuiz, userId }) => {
+const Quiz = ({ attemptId, attemptQuiz, userId, fetchQuizSlug }) => {
   const [answer, setAnswer] = useState({});
   const { slug } = useParams();
 
@@ -40,6 +40,11 @@ const Quiz = ({ attemptId, attemptQuiz, userId }) => {
     };
     setAnswer(result);
   };
+
+  useEffect(() => {
+    fetchQuizSlug();
+  }, [userId]);
+
   return (
     <div className=" max-w-screen-md pl-10 pb-10">
       <form
@@ -50,7 +55,7 @@ const Quiz = ({ attemptId, attemptQuiz, userId }) => {
         <Typography className="ml-10 mt-5" style="h1">
           {attemptQuiz.name}
         </Typography>
-        {attemptQuiz.questions.map((Q, index) => {
+        {attemptQuiz.questions?.map((Q, index) => {
           return (
             <div
               key={index}

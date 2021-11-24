@@ -71,6 +71,9 @@ class QuizzesController < ApplicationController
     unless @quiz
       render status: :not_found, json: { error: "Cannot find Quiz" }
     end
+    if params[:userId] == "undefined" && @quiz
+      render status: :ok, json: { name: @quiz.name, id: @quiz.id }
+    end
   end
 
   def show_answer
